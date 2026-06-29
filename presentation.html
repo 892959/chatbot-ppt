@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot 相关的事项分享</title>
+<style>
+:root {
+    --bg-primary: #FFFFFF;
+    --bg-accent: #C00000;
+    --bg-dark: #1A1A1B;
+    --text-primary: #404040;
+    --text-inverse: #FFFFFF;
+    --text-secondary: #666666;
+    --text-accent: #C00000;
+    --chart-1: #800000;
+    --chart-2: #C00000;
+    --chart-3: #EE1212;
+    --chart-4: #EE6E4A;
+    --chart-5: #F49E86;
+    --chart-6: #A64D00;
+    --chart-7: #BF7230;
+    --chart-8: #FF7600;
+    --chart-9: #FF9840;
+    --chart-10: #FFB473;
+
+    --font-display: "Microsoft YaHei", "微软雅黑", sans-serif;
+    --font-body: "Microsoft YaHei", "微软雅黑", sans-serif;
+    --title-size: clamp(1.6rem, 5vw, 3.2rem);
+    --h2-size: clamp(1.3rem, 3.6vw, 2.5rem);
+    --h3-size: clamp(1rem, 2.4vw, 1.6rem);
+    --subtitle-size: clamp(0.9rem, 2vw, 1.25rem);
+    --body-size: clamp(0.78rem, 1.3vw, 1.05rem);
+    --small-size: clamp(0.68rem, 1vw, 0.85rem);
+
+    --slide-padding: clamp(1.5rem, 4vw, 4.5rem);
+    --content-gap: clamp(1rem, 2vw, 2rem);
+    --element-gap: clamp(0.4rem, 1vw, 1rem);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-normal: 0.6s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    line-height: 1.5;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== 通用组件 ===== */
+.title-cn { font-size: 1em; font-weight: bold; color: var(--text-primary); line-height: 1.15; }
+.title-en { font-size: 0.42em; font-weight: normal; color: var(--text-secondary); margin-top: 0.6rem; letter-spacing: 1px; }
+.accent-bar { width: 64px; height: 5px; background: var(--bg-accent); margin: 1.2rem 0; border-radius: 2px; }
+
+.slide-tag {
+    display: inline-block;
+    font-size: var(--small-size);
+    color: var(--bg-accent);
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+}
+.section-title {
+    font-size: var(--h2-size);
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+    line-height: 1.15;
+}
+.section-title .en { display:block; font-size: 0.4em; color: var(--text-secondary); font-weight: normal; margin-top: 0.4rem; letter-spacing: 1px;}
+
+.gradient-bg {
+    background:
+        radial-gradient(ellipse at 18% 82%, rgba(192, 0, 0, 0.07) 0%, transparent 52%),
+        radial-gradient(ellipse at 82% 18%, rgba(255, 118, 0, 0.06) 0%, transparent 52%),
+        var(--bg-primary);
+}
+.grid-bg::before {
+    content:''; position:absolute; inset:0; z-index:0;
+    background-image:
+        linear-gradient(rgba(192, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+/* 页码 */
+.page-num {
+    position: absolute; bottom: clamp(1rem,2.5vh,2rem); right: clamp(1.5rem,4vw,4.5rem);
+    font-size: var(--small-size); color: var(--text-secondary); z-index: 5; opacity:.6;
+}
+.corner-mark {
+    position:absolute; top: clamp(1rem,2.5vh,2rem); left: clamp(1.5rem,4vw,4.5rem);
+    font-size: var(--small-size); color: var(--bg-accent); font-weight:bold; letter-spacing:2px; z-index:5;
+}
+
+/* ===== 封面 ===== */
+.slide.title-slide {
+    background: url('assets/bg.png') center/cover no-repeat;
+    color: var(--text-inverse);
+}
+.title-slide .slide-content { justify-content: center; }
+.title-slide .title-cn { color: var(--text-inverse); text-shadow: 0 2px 12px rgba(0,0,0,.5); font-size: var(--title-size); }
+.title-slide .title-en { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.title-slide .meta { margin-top: 2rem; font-size: var(--subtitle-size); color: rgba(255,255,255,.92); text-shadow:0 1px 4px rgba(0,0,0,.4); }
+.title-slide .meta span { display:inline-block; margin-right: 1.5rem; }
+.brand-foot { position:absolute; bottom: clamp(1.5rem,3vh,2.5rem); left: var(--slide-padding); font-size: var(--small-size); color: rgba(255,255,255,.8); letter-spacing:3px; z-index:5;}
+
+/* ===== 目录 ===== */
+.agenda-grid { display:grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem,2.5vw,2.2rem); margin-top: var(--content-gap); }
+.agenda-item { display:flex; align-items:flex-start; gap: clamp(.8rem,1.5vw,1.4rem); padding: clamp(.8rem,1.5vw,1.4rem); border-left: 3px solid rgba(192,0,0,.15); transition: all .3s var(--ease-out-expo); }
+.agenda-item:hover { border-left-color: var(--bg-accent); background: rgba(192,0,0,.02); }
+.agenda-number { font-size: clamp(2rem,4.5vw,3.4rem); font-weight:700; color: var(--bg-accent); line-height:.9; }
+.agenda-text .t { font-size: var(--h3-size); font-weight:bold; color: var(--text-primary); }
+.agenda-text .d { font-size: var(--small-size); color: var(--text-secondary); margin-top:.3rem; }
+
+/* ===== 数据卡片 ===== */
+.metric-row { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(.8rem,2vw,1.8rem); margin: var(--content-gap) 0; }
+.metric-card {
+    background: var(--bg-primary); border-radius: 14px; padding: clamp(1rem,2.5vw,2rem);
+    text-align:center; box-shadow: 0 6px 28px rgba(0,0,0,.07); border:1px solid rgba(0,0,0,.04);
+}
+.metric-card .num { font-size: clamp(1.8rem,4.5vw,3.2rem); font-weight:800; line-height:1; }
+.metric-card .lbl { font-size: var(--body-size); color: var(--text-secondary); margin-top:.7rem; }
+.c-blue .num{ color:#2563EB;} .c-orange .num{ color: var(--chart-8);} .c-red .num{ color: var(--bg-accent);}
+
+/* ===== 链路图 ===== */
+.flow-chain { display:flex; align-items:stretch; justify-content:center; gap:0; flex-wrap:wrap; margin: var(--content-gap) 0; }
+.flow-node {
+    background: #fff; border:2px solid rgba(192,0,0,.18); border-radius:12px;
+    padding: clamp(.7rem,1.6vw,1.3rem) clamp(.8rem,1.8vw,1.5rem); min-width: clamp(120px,16vw,180px);
+    text-align:center; position:relative;
+}
+.flow-node.hl { border-color: var(--bg-accent); background: rgba(192,0,0,.04); box-shadow:0 6px 22px rgba(192,0,0,.12); }
+.flow-node .nt { font-size: var(--body-size); font-weight:bold; color: var(--text-primary); }
+.flow-node .nd { font-size: var(--small-size); color: var(--text-secondary); margin-top:.3rem; }
+.flow-arrow { display:flex; align-items:center; padding:0 clamp(.4rem,1vw,1rem); color: var(--bg-accent); font-size: clamp(1.2rem,2.5vw,1.8rem); font-weight:bold; }
+
+/* ===== 双栏 ===== */
+.two-col { display:grid; grid-template-columns: 1fr 1fr; gap: clamp(1.2rem,3vw,3rem); align-items:center; margin-top: var(--content-gap); }
+
+/* ===== 截图/图片 ===== */
+.slide-image { max-width:100%; max-height:min(42vh,400px); object-fit:contain; border-radius:12px; display:block; }
+.slide-image.screenshot { border:1px solid rgba(192,0,0,.2); box-shadow:0 8px 32px rgba(0,0,0,.15); }
+.slide-image.zoomable { cursor:zoom-in; transition:transform .25s var(--ease-out-expo); }
+.slide-image.zoomable:hover { transform:scale(1.015); }
+.shot-wrap { position:relative; }
+.shot-cap { font-size:var(--small-size); color:var(--text-secondary); text-align:center; margin-top:.5rem; }
+.shot-cap b { color:var(--bg-accent); }
+.zoom-hint { position:absolute; top:.5rem; right:.5rem; background:rgba(0,0,0,.55); color:#fff; font-size:var(--small-size); padding:.15rem .5rem; border-radius:6px; pointer-events:none; }
+
+/* ===== 灯箱 ===== */
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; z-index:200; cursor:zoom-out; padding:3vh 3vw; }
+.lightbox.open { display:flex; }
+.lightbox img { max-width:96vw; max-height:92vh; object-fit:contain; border-radius:8px; box-shadow:0 12px 60px rgba(0,0,0,.6); }
+.lightbox .close-x { position:absolute; top:2vh; right:3vw; color:#fff; font-size:clamp(1.5rem,4vw,2.5rem); cursor:pointer; line-height:1; }
+
+/* ===== 面粉/馒头/蛋糕 三联图 ===== */
+.metaphor-imgs { display:flex; align-items:center; justify-content:center; gap:clamp(.3rem,1vw,.8rem); }
+.metaphor-imgs figure { margin:0; display:flex; flex-direction:column; align-items:center; }
+.metaphor-imgs img { width:clamp(80px,9vw,140px); height:auto; background:rgba(255,255,255,.06); border-radius:14px; padding:.4rem; }
+.metaphor-imgs figcaption { margin-top:.5rem; font-size:var(--small-size); color:rgba(255,255,255,.85); white-space:nowrap; }
+.metaphor-imgs .m-arrow { color:var(--chart-9); font-size:clamp(1.2rem,2.5vw,1.8rem); font-weight:bold; }
+.metaphor-imgs .m-or { color:rgba(255,255,255,.55); font-size:var(--small-size); }
+
+/* ===== 要点列表 ===== */
+.bullet-list { list-style:none; display:flex; flex-direction:column; gap: clamp(.6rem,1.4vh,1.1rem); margin-top: var(--element-gap); }
+.bullet-list li { display:flex; gap:.8rem; align-items:flex-start; font-size: var(--body-size); }
+.bullet-list li .ic { flex:none; width:1.6em; height:1.6em; border-radius:50%; background: var(--bg-accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.75em; font-weight:bold; margin-top:.1em;}
+.bullet-list li b { color: var(--text-primary); }
+.bullet-list li .sub { color: var(--text-secondary); }
+
+/* ===== 痛点/解决卡片 ===== */
+.card-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(.8rem,1.8vw,1.4rem); margin-top: var(--content-gap); }
+.pcard { border-radius:12px; padding: clamp(.9rem,2vw,1.5rem); background:#fff; box-shadow:0 4px 18px rgba(0,0,0,.06); border-top:4px solid var(--bg-accent); }
+.pcard .h { font-size: var(--h3-size); font-weight:bold; color: var(--text-primary); margin-bottom:.5rem; display:flex; align-items:center; gap:.5rem;}
+.pcard .b { font-size: var(--small-size); color: var(--text-secondary); line-height:1.5; }
+.pcard.sol { border-top-color: var(--chart-8); }
+
+/* ===== 大引言 ===== */
+.quote-slide { background: var(--bg-dark); color: var(--text-inverse); }
+.quote-slide .slide-content{ justify-content:center; align-items:flex-start; }
+.big-quote { font-size: clamp(1.5rem,4.2vw,3rem); font-weight:bold; line-height:1.4; color:#fff; }
+.big-quote .em { color: var(--chart-9); }
+.quote-src { margin-top: 1.5rem; font-size: var(--subtitle-size); color: rgba(255,255,255,.65); }
+.quote-mark { font-size: clamp(3rem,8vw,6rem); color: var(--bg-accent); line-height:.6; font-family: Georgia, serif; }
+
+/* ===== embedding 科普 ===== */
+.embed-vis { display:flex; gap: clamp(.5rem,1.2vw,1rem); flex-wrap:wrap; justify-content:center; margin: var(--element-gap) 0;}
+.word-chip { background:#fff; border:1px solid rgba(192,0,0,.2); border-radius:8px; padding:.4rem .8rem; font-size: var(--small-size); }
+.word-chip .vec { display:block; font-family: monospace; color: var(--bg-accent); font-size:.85em; margin-top:.2rem;}
+
+/* ===== 时间轴/托管阶段 ===== */
+.stage-flow { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(.8rem,2vw,1.6rem); margin-top: var(--content-gap); position:relative;}
+.stage { border-radius:14px; padding: clamp(.9rem,2vw,1.6rem); text-align:center; position:relative; }
+.stage.s1 { background: rgba(192,0,0,.05); border:1px solid rgba(192,0,0,.15);}
+.stage.s2 { background: rgba(255,118,0,.07); border:1px solid rgba(255,118,0,.2);}
+.stage.s3 { background: var(--bg-dark); color:#fff; }
+.stage .st { font-size: var(--h3-size); font-weight:bold; }
+.stage .sd { font-size: var(--small-size); margin-top:.5rem; color: var(--text-secondary);}
+.stage.s3 .sd{ color: rgba(255,255,255,.7);}
+.stage .badge{ display:inline-block; font-size:.7em; background: var(--bg-accent); color:#fff; padding:.15rem .6rem; border-radius:10px; margin-bottom:.5rem;}
+
+/* 进度条 & 导航点 */
+.progress-bar { position:fixed; top:0; left:0; height:4px; background: var(--bg-accent); width:0; z-index:100; transition:width .2s;}
+.nav-dots { position:fixed; right: clamp(.6rem,1.5vw,1.2rem); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:.6rem; z-index:100;}
+.nav-dots button { width:9px; height:9px; border-radius:50%; border:none; background: rgba(192,0,0,.25); cursor:pointer; padding:0; transition:all .3s;}
+.nav-dots button.active { background: var(--bg-accent); transform:scale(1.4);}
+
+/* reveal 动画 */
+.reveal { opacity:0; transform: translateY(28px); transition: opacity .6s var(--ease-out-expo), transform .6s var(--ease-out-expo);}
+.visible .reveal { opacity:1; transform:translateY(0);}
+.visible .reveal:nth-child(2){ transition-delay:.08s;}
+.visible .reveal:nth-child(3){ transition-delay:.16s;}
+.visible .reveal:nth-child(4){ transition-delay:.24s;}
+.visible .reveal:nth-child(5){ transition-delay:.32s;}
+
+.highlight { color: var(--bg-accent); font-weight:bold; }
+.muted { color: var(--text-secondary); }
+
+@media (max-height:700px){ :root{ --slide-padding: clamp(1rem,3vw,2.5rem);} }
+@media (max-width:768px){
+    .agenda-grid,.metric-row,.card-grid,.stage-flow,.two-col{ grid-template-columns:1fr;}
+    .flow-chain{ flex-direction:column;}
+    .flow-arrow{ transform:rotate(90deg);}
+}
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:.01ms!important; transition-duration:.2s!important;} html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+<div class="progress-bar"></div>
+<nav class="nav-dots"></nav>
+
+<!-- 1. 封面 -->
+<section class="slide title-slide">
+    <div class="slide-content">
+        <h1 class="reveal">
+            <div class="title-cn">Chatbot 相关的事项分享</div>
+            <div class="title-en">AI-Assisted Live Service Chatbot · Review & Methodology</div>
+        </h1>
+        <div class="accent-bar reveal" style="background:#fff;"></div>
+        <div class="meta reveal">
+            <span>邱梓涛</span>
+            <span>精灵运营部月度分享</span>
+            <span>2026.07</span>
+        </div>
+    </div>
+    <div class="brand-foot">NETEASE · 网易游戏</div>
+</section>
+
+<!-- 2. 目录 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">CONTENTS</span>
+    <div class="slide-content">
+        <div class="section-title reveal">目录<span class="en">What we'll cover today</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="agenda-grid">
+            <div class="agenda-item reveal"><div class="agenda-number">01</div><div class="agenda-text"><div class="t">项目背景</div><div class="d">机器人一环扣一环，chatbot 是最后一环</div></div></div>
+            <div class="agenda-item reveal"><div class="agenda-number">02</div><div class="agenda-text"><div class="t">困难与解法</div><div class="d">采纳率为什么低？我们做了什么</div></div></div>
+            <div class="agenda-item reveal"><div class="agenda-number">03</div><div class="agenda-text"><div class="t">方法论沉淀</div><div class="d">从 embedding 到「面粉与蛋糕」</div></div></div>
+            <div class="agenda-item reveal"><div class="agenda-number">04</div><div class="agenda-text"><div class="t">未来愿景</div><div class="d">手动 → 半托管 → 全托管</div></div></div>
+        </div>
+    </div>
+    <div class="page-num">01 / 16</div>
+</section>
+
+<!-- 3. 开场钩子 -->
+<section class="slide quote-slide">
+    <div class="slide-content">
+        <div class="quote-mark reveal">"</div>
+        <div class="big-quote reveal">一个玩家进线，背后是一条<span class="em">环环相扣</span>的 AI 流水线。<br>而 chatbot，是直接面向客服的<span class="em">最后一环</span>。</div>
+        <div class="quote-src reveal">— 它能不能用、好不好用，决定了前面所有环节的价值能否兑现</div>
+    </div>
+    <div class="page-num">02 / 16</div>
+</section>
+
+<!-- 4. chatbot 是什么（界面） -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">01 · 项目背景</span>
+    <div class="slide-content">
+        <div class="section-title reveal">Chatbot 长什么样<span class="en">In the agent workbench</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="two-col">
+            <div class="reveal">
+                <ul class="bullet-list">
+                    <li><span class="ic">1</span><div><b>嵌在聚星工作台会话流中</b><span class="sub">玩家话术下方实时浮现「AI 推荐回复」区块</span></div></li>
+                    <li><span class="ic">2</span><div><b>三种使用方式</b><span class="sub">一键发送 · 复制到编辑框 · 手动复制</span></div></li>
+                    <li><span class="ic">3</span><div><b>后验证拦截</b><span class="sub">生成不好/不可对玩家用的话术 → 拦截，显示「暂无话术推荐」，不展示</span></div></li>
+                    <li><span class="ic">4</span><div><b>0428 正式上线</b><span class="sub">覆盖 ma75（光遇）+ xyq（梦幻西游）等业务线</span></div></li>
+                </ul>
+            </div>
+            <div class="reveal">
+                <div style="background:#fff;border-radius:14px;padding:clamp(.6rem,1.4vw,1rem);box-shadow:0 6px 26px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.05);margin-bottom:var(--element-gap);">
+                    <div style="font-size:var(--small-size);color:var(--bg-accent);font-weight:bold;margin-bottom:.4rem;">🤖 AI 推荐回复</div>
+                    <div style="font-size:var(--small-size);line-height:1.45;color:var(--text-primary);background:rgba(192,0,0,.03);border-radius:8px;padding:.5rem .7rem;">"理解大佬的心情，可以多留意后续活动哦~"</div>
+                    <div style="display:flex;gap:.5rem;margin-top:.5rem;font-size:var(--small-size);">
+                        <span style="background:var(--bg-accent);color:#fff;padding:.25rem .7rem;border-radius:6px;">复制并粘贴到输入框</span>
+                        <span style="border:1px solid rgba(192,0,0,.3);color:var(--bg-accent);padding:.25rem .7rem;border-radius:6px;">一键发送</span>
+                    </div>
+                </div>
+                <div class="shot-wrap">
+                    <img src="assets/聚星工作台chatbot.png" alt="聚星工作台中 chatbot 推荐话术的位置" class="slide-image screenshot zoomable" style="width:100%;">
+                    <span class="zoom-hint">🔍 点击放大</span>
+                </div>
+                <div class="shot-cap">聚星工作台真实界面 —— <b>红框处即 chatbot 推荐话术</b></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-num">03 / 16</div>
+</section>
+
+<!-- 5. 项目背景：全链路 -->
+<section class="slide gradient-bg grid-bg">
+    <span class="corner-mark">01 · 项目背景</span>
+    <div class="slide-content">
+        <div class="section-title reveal">机器人一环扣一环<span class="en">An end-to-end AI service pipeline</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="flow-chain reveal">
+            <div class="flow-node"><div class="nt">VOC 意图识别</div><div class="nd">进人工前对话<br>→ 三级意图</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><div class="nt">AX 工具执行</div><div class="nd">一个 VOC 调一个工具<br>查知识库/数据/后台</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node hl"><div class="nt">Chatbot 🤖</div><div class="nd">工具结果+上下文<br>→ 推荐话术</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><div class="nt">人工客服</div><div class="nd">一键发送 / 编辑 / 复制</div></div>
+        </div>
+        <ul class="bullet-list reveal" style="margin-top:var(--content-gap)">
+            <li><span class="ic">!</span><div><b>上游决定下游：</b><span class="sub">VOC 不准 → 工具调错 → 话术再漂亮也没用。chatbot 是最后一环，也是「兜底」与「放大器」。</span></div></li>
+            <li><span class="ic">★</span><div><b>chatbot 的输入：</b><span class="sub">① AX 工具执行结果（主） ② 玩家与客服上下文 ③ 玩家当前发言　→　输出：一句可直接用的推荐话术</span></div></li>
+        </ul>
+    </div>
+    <div class="page-num">04 / 16</div>
+</section>
+
+<!-- 6. 上线成果 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">01 · 项目背景</span>
+    <div class="slide-content">
+        <div class="section-title reveal">上线成果速览<span class="en">Key metrics since 0428</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="metric-row">
+            <div class="metric-card c-blue reveal"><div class="num">3.80%</div><div class="lbl">辅助占比<br><span class="muted" style="font-size:.85em">理论上限 36.7%，约 9 倍空间</span></div></div>
+            <div class="metric-card c-orange reveal"><div class="num">66.61%</div><div class="lbl">话术推荐率<br><span class="muted" style="font-size:.85em">有多少消息生成了推荐</span></div></div>
+            <div class="metric-card c-red reveal"><div class="num">55.10%</div><div class="lbl">推荐可用率<br><span class="muted" style="font-size:.85em">推荐话术中可用的比例</span></div></div>
+        </div>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:.5rem;">
+            从 5/8 的 <b class="highlight">2.03%</b> 到 5/27 的 <b class="highlight">4.88%</b>，闲聊能力、提示词优化每一次迭代都带来肉眼可见的跃升 —— 但距离天花板，我们才走了不到 <b class="highlight">1/9</b>。
+        </p>
+    </div>
+    <div class="page-num">05 / 16</div>
+</section>
+
+<!-- 7. 知识科普：embedding -->
+<section class="slide gradient-bg grid-bg">
+    <span class="corner-mark">📖 知识加油站</span>
+    <div class="slide-content">
+        <div class="section-title reveal">大模型靠啥理解文字？<span class="en">Word Embedding · 词嵌入</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="reveal embed-vis">
+            <div class="word-chip">充值<span class="vec">[0.82, -0.11, …]</span></div>
+            <div class="word-chip">没到账<span class="vec">[0.79, -0.09, …]</span></div>
+            <div class="word-chip">退款<span class="vec">[0.75, 0.20, …]</span></div>
+            <div class="word-chip">封号<span class="vec">[-0.30, 0.66, …]</span></div>
+        </div>
+        <ul class="bullet-list reveal">
+            <li><span class="ic">①</span><div><b>文字 → 向量：</b><span class="sub">模型把每个词变成一串数字（向量），意思相近的词，向量也相近 —— "充值"和"没到账"挨得近，"封号"离得远。</span></div></li>
+            <li><span class="ic">②</span><div><b>这就是 VOC 识别的底层：</b><span class="sub">玩家说"我钱扣了东西没给我"，模型靠 embedding 判断它和"充值未到账"是一类 —— 不需要一字一句写死规则。</span></div></li>
+            <li><span class="ic">③</span><div><b>这也是 chatbot 的底层：</b><span class="sub">理解上下文、匹配知识库、生成话术，全靠把语言压进同一个"语义空间"再计算距离。</span></div></li>
+        </ul>
+        <p class="reveal" style="font-size:var(--small-size);color:var(--text-secondary);margin-top:.6rem;">💡 一句话：embedding 把「语言」翻译成机器能算的「坐标」。理解了它，就理解了 chatbot 为什么有时聪明、有时犯傻。</p>
+    </div>
+    <div class="page-num">06 / 16</div>
+</section>
+
+<!-- 8. 困难/痛点 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">02 · 困难与解法</span>
+    <div class="slide-content">
+        <div class="section-title reveal">采纳率为什么上不去？<span class="en">Three bottlenecks</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="card-grid">
+            <div class="pcard reveal"><div class="h">①&nbsp;客服操作习惯</div><div class="b">习惯自己打字，点选推荐的意愿待提升。工具再好，不用 = 0。</div></div>
+            <div class="pcard reveal"><div class="h">②&nbsp;上游 AX 结果</div><div class="b">进人工只自动调一次工具，VOC 错了/玩家提新问题，结果就不匹配，话术失真。</div></div>
+            <div class="pcard reveal"><div class="h">③&nbsp;话术拦截过严</div><div class="b">后验证为保质量拦掉不少话术，可用推荐量被过滤过多。</div></div>
+        </div>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:var(--content-gap);">
+            一个产品问题，<b class="highlight">一半在技术，一半在人</b>。
+        </p>
+    </div>
+    <div class="page-num">07 / 16</div>
+</section>
+
+<!-- 9. 解决方案 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">02 · 困难与解法</span>
+    <div class="slide-content">
+        <div class="section-title reveal">我们做了什么<span class="en">What we did & what's next</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="card-grid">
+            <div class="pcard sol reveal"><div class="h">A&nbsp;优化工作流</div><div class="b">补充闲聊/安抚类话术覆盖；禁止"收到""稍等"类废话。<br><span class="highlight">闲聊能力上线后曲线明显抬升</span></div></div>
+            <div class="pcard sol reveal"><div class="h">B&nbsp;补高频知识库</div><div class="b">针对高频场景补充识别与话术，提高推荐命中率。</div></div>
+            <div class="pcard sol reveal"><div class="h">C&nbsp;调拦截策略</div><div class="b">在保证质量前提下释放推荐量，平衡"可用率"与"覆盖率"。</div></div>
+        </div>
+        <ul class="bullet-list reveal" style="margin-top:var(--content-gap)">
+            <li><span class="ic">→</span><div><b>规划中：二次动态 VOC 总结调用 skill</b><span class="sub">不再只调一次工具 —— 玩家意图变了，系统按「信息量」动态再识别一次、再调一次，自动纠偏。</span></div></li>
+        </ul>
+    </div>
+    <div class="page-num">08 / 16</div>
+</section>
+
+<!-- 10. 比喻：面粉与蛋糕 -->
+<section class="slide quote-slide">
+    <div class="slide-content" style="display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:center;">
+        <div>
+            <div class="slide-tag reveal" style="color:var(--chart-9)">03 · 方法论</div>
+            <div class="big-quote reveal">同样一袋面粉，<br>可以做成<span class="em">馒头</span>，也可以做成<span class="em">蛋糕</span>。</div>
+            <div class="quote-src reveal" style="line-height:1.7;">
+                原料没变，关键看你怎么塑造、放在什么位置。<br>
+                —— 同样的 AX 工具结果，提示词与方法不同，做出的话术天差地别；<br>
+                —— 同样的客服，不该被钉死在"打字员"，他可以是<b style="color:var(--chart-9)">盯盘的指挥官</b>。
+            </div>
+        </div>
+        <div class="reveal metaphor-imgs">
+            <figure><img src="assets/面粉.svg" alt="面粉" class="slide-image zoomable"><figcaption>面粉 · 同一原料</figcaption></figure>
+            <span class="m-arrow">→</span>
+            <figure><img src="assets/馒头.svg" alt="馒头" class="slide-image zoomable"><figcaption>馒头</figcaption></figure>
+            <span class="m-or">或</span>
+            <figure><img src="assets/蛋糕.svg" alt="蛋糕" class="slide-image zoomable"><figcaption>蛋糕</figcaption></figure>
+        </div>
+    </div>
+    <div class="page-num">09 / 16</div>
+</section>
+
+<!-- 11. 比喻落地 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">03 · 方法论</span>
+    <div class="slide-content">
+        <div class="section-title reveal">原料相同，成果不同<span class="en">Same flour, different cake</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="two-col">
+            <div class="reveal" style="background:#fff;border-radius:12px;padding:clamp(1rem,2vw,1.6rem);box-shadow:0 4px 18px rgba(0,0,0,.06)">
+                <div style="font-weight:bold;color:var(--text-primary);font-size:var(--h3-size);margin-bottom:.6rem;">🌾 同样的"面粉"</div>
+                <ul class="bullet-list">
+                    <li><span class="ic">=</span><div><span class="sub">同一份 AX 工具结果</span></div></li>
+                    <li><span class="ic">=</span><div><span class="sub">同一个大模型底座</span></div></li>
+                    <li><span class="ic">=</span><div><span class="sub">同一批客服同事</span></div></li>
+                </ul>
+            </div>
+            <div class="reveal" style="background:rgba(192,0,0,.04);border-radius:12px;padding:clamp(1rem,2vw,1.6rem);border:1px solid rgba(192,0,0,.12)">
+                <div style="font-weight:bold;color:var(--bg-accent);font-size:var(--h3-size);margin-bottom:.6rem;">🎂 不同的"蛋糕"</div>
+                <ul class="bullet-list">
+                    <li><span class="ic">▲</span><div><span class="sub">提示词/方法变通 → 话术可用率翻倍</span></div></li>
+                    <li><span class="ic">▲</span><div><span class="sub">流程变通 → 二次 VOC 自动纠偏</span></div></li>
+                    <li><span class="ic">▲</span><div><span class="sub">角色变通 → 客服从"回复"到"盯盘"</span></div></li>
+                </ul>
+            </div>
+        </div>
+        <p class="reveal" style="text-align:center;font-size:var(--body-size);color:var(--text-secondary);margin-top:var(--content-gap);">基础资源是一样的，<b class="highlight">思路与方法不同，结果完全不同</b> —— 这就是产品运营的价值。</p>
+    </div>
+    <div class="page-num">10 / 16</div>
+</section>
+
+<!-- 12. 方法论总结 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">03 · 方法论</span>
+    <div class="slide-content">
+        <div class="section-title reveal">沉淀下来的四条方法论<span class="en">Methodology distilled</span></div>
+        <div class="accent-bar reveal"></div>
+        <ul class="bullet-list reveal">
+            <li><span class="ic">1</span><div><b>先看上游，再看下游</b><span class="sub">采纳率低不一定是 chatbot 的锅 —— 顺着 VOC → 工具 → 话术追根因，别在最后一环死磕。</span></div></li>
+            <li><span class="ic">2</span><div><b>用数据说话，小步快跑</b><span class="sub">每次优化（闲聊、提示词）都能在曲线上看到跳变。先建指标，再谈优化。</span></div></li>
+            <li><span class="ic">3</span><div><b>技术问题，一半在人</b><span class="sub">客服不用，再好的推荐也是 0。降低操作成本、建立信任，和模型同等重要。</span></div></li>
+            <li><span class="ic">4</span><div><b>学会变通</b><span class="sub">同样的原料，换个思路就是另一个成果。面粉可以是蛋糕，客服可以是指挥官。</span></div></li>
+        </ul>
+    </div>
+    <div class="page-num">11 / 16</div>
+</section>
+
+<!-- 13. 未来愿景：托管阶段 -->
+<section class="slide gradient-bg grid-bg">
+    <span class="corner-mark">04 · 未来愿景</span>
+    <div class="slide-content">
+        <div class="section-title reveal">从手动回复，到全托管<span class="en">Manual → Co-pilot → Auto-pilot</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="stage-flow">
+            <div class="stage s1 reveal"><div class="badge">现在</div><div class="st">手动辅助</div><div class="sd">客服逐条点击「一键发送/复制」使用推荐</div></div>
+            <div class="stage s2 reveal"><div class="badge">下一步</div><div class="st">半托管</div><div class="sd">高置信话术自动发；低置信/有风险才提醒客服介入</div></div>
+            <div class="stage s3 reveal"><div class="badge" style="background:var(--chart-8)">愿景</div><div class="st">全托管 · 智能盯盘</div><div class="sd">机器人自动在发，没"堵车"不打扰；一个客服盯更多会话</div></div>
+        </div>
+        <p class="reveal" style="text-align:center;font-size:var(--body-size);color:var(--text-secondary);margin-top:var(--content-gap);">
+            核心理念：<b class="highlight">没有卡点就自动流转，有"堵车"（准确率低/有风险/需抉择）才提醒人介入。</b>
+        </p>
+    </div>
+    <div class="page-num">12 / 16</div>
+</section>
+
+<!-- 14. 升华1：好的问题比答案重要 -->
+<section class="slide quote-slide">
+    <div class="slide-content" style="display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:center;">
+        <div>
+            <div class="quote-mark reveal">"</div>
+            <div class="big-quote reveal">一个<span class="em">好的问题</span>，<br>比好的答案更重要。</div>
+            <div class="quote-src reveal">— 写在公司饭堂墙上的一句话</div>
+            <p class="reveal" style="margin-top:1.5rem;font-size:var(--body-size);color:rgba(255,255,255,.7);line-height:1.7;">
+                过去我们一直问："怎么让话术更准？" 但真正该问的也许是：<br>
+                "客服到底需要什么样的辅助？""我们用什么指标衡量它真的有用？"
+            </p>
+        </div>
+        <div class="reveal" style="display:flex;justify-content:center;">
+            <img src="assets/好问题海报.png" alt="一个好的问题，比好的答案更重要" class="slide-image zoomable" style="max-height:78vh;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.5);">
+        </div>
+    </div>
+    <div class="page-num">13 / 16</div>
+</section>
+
+<!-- 15. 升华2：姚顺雨 下半场 -->
+<section class="slide gradient-bg">
+    <span class="corner-mark">升华 · The Second Half</span>
+    <div class="slide-content">
+        <div class="section-title reveal">AI 的「下半场」<span class="en">From "how to solve" to "what's worth solving"</span></div>
+        <div class="accent-bar reveal"></div>
+        <div class="two-col">
+            <div class="reveal" style="background:#fff;border-radius:12px;padding:clamp(1rem,2vw,1.6rem);box-shadow:0 4px 18px rgba(0,0,0,.06)">
+                <div style="font-weight:bold;color:var(--text-secondary);font-size:var(--h3-size);">上半场</div>
+                <p style="font-size:var(--body-size);color:var(--text-secondary);margin-top:.5rem;line-height:1.6;">比拼<b>怎么解题</b> —— 更强的模型、更高的准确率、更好的话术。</p>
+            </div>
+            <div class="reveal" style="background:rgba(192,0,0,.04);border-radius:12px;padding:clamp(1rem,2vw,1.6rem);border:1px solid rgba(192,0,0,.12)">
+                <div style="font-weight:bold;color:var(--bg-accent);font-size:var(--h3-size);">下半场</div>
+                <p style="font-size:var(--body-size);color:var(--text-primary);margin-top:.5rem;line-height:1.6;">比拼<b>定义对的问题</b> —— 该解决什么、怎么衡量价值、如何重塑人与 AI 的协作。</p>
+            </div>
+        </div>
+        <p class="reveal" style="text-align:center;font-size:var(--body-size);color:var(--text-secondary);margin-top:var(--content-gap);line-height:1.7;">
+            姚顺雨说，AI 的下半场，瓶颈不再是"能不能做到"，而是"<b class="highlight">做什么、怎么定义成功</b>"。<br>
+            chatbot 的下半场，不是更准的话术，而是 —— <b class="highlight">重新定义客服与机器的关系</b>。
+        </p>
+    </div>
+    <div class="page-num">14 / 16</div>
+</section>
+
+<!-- 16. 结尾 -->
+<section class="slide title-slide">
+    <div class="slide-content" style="align-items:flex-start;">
+        <h1 class="reveal">
+            <div class="title-cn" style="font-size:var(--h2-size)">面粉一样，<br>但我们要做最好的那块蛋糕。</div>
+            <div class="title-en">Thanks · Q&amp;A</div>
+        </h1>
+        <div class="accent-bar reveal" style="background:#fff;"></div>
+        <p class="reveal" style="color:rgba(255,255,255,.9);font-size:var(--subtitle-size);text-shadow:0 1px 4px rgba(0,0,0,.4);">提问 · 讨论 · 一起把最后一环做扎实</p>
+    </div>
+    <div class="brand-foot">NETEASE · 网易游戏　|　邱梓涛</div>
+</section>
+
+<div class="lightbox" id="lightbox"><span class="close-x">&times;</span><img src="" alt="放大查看"></div>
+
+<script>
+class SlidePresentation {
+    constructor(){
+        this.slides = [...document.querySelectorAll('.slide')];
+        this.current = 0;
+        this.bar = document.querySelector('.progress-bar');
+        this.dotsWrap = document.querySelector('.nav-dots');
+        this.buildDots();
+        this.observe();
+        this.bindKeys();
+        this.updateProgress();
+    }
+    buildDots(){
+        this.slides.forEach((_,i)=>{
+            const b=document.createElement('button');
+            b.onclick=()=>this.slides[i].scrollIntoView({behavior:'smooth'});
+            this.dotsWrap.appendChild(b);
+        });
+        this.dots=[...this.dotsWrap.children];
+    }
+    observe(){
+        const io=new IntersectionObserver((es)=>{
+            es.forEach(e=>{
+                if(e.isIntersecting){
+                    e.target.classList.add('visible');
+                    this.current=this.slides.indexOf(e.target);
+                    this.updateProgress();
+                }
+            });
+        },{threshold:.55});
+        this.slides.forEach(s=>io.observe(s));
+    }
+    updateProgress(){
+        this.bar.style.width=((this.current+1)/this.slides.length*100)+'%';
+        this.dots.forEach((d,i)=>d.classList.toggle('active',i===this.current));
+    }
+    go(n){
+        const t=Math.max(0,Math.min(this.slides.length-1,this.current+n));
+        this.slides[t].scrollIntoView({behavior:'smooth'});
+    }
+    bindKeys(){
+        document.addEventListener('keydown',e=>{
+            if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();this.go(1);}
+            if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();this.go(-1);}
+        });
+    }
+}
+new SlidePresentation();
+
+// 图片灯箱：点击 .zoomable 放大，点遮罩/关闭/ESC 退出
+(function(){
+    const box=document.getElementById('lightbox');
+    const boxImg=box.querySelector('img');
+    document.querySelectorAll('.slide-image.zoomable').forEach(img=>{
+        img.addEventListener('click',e=>{ e.stopPropagation(); boxImg.src=img.src; box.classList.add('open'); });
+    });
+    box.addEventListener('click',()=>box.classList.remove('open'));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') box.classList.remove('open'); });
+})();
+</script>
+</body>
+</html>

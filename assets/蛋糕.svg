@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF6EF"/>
+      <stop offset="1" stop-color="#FCE3CE"/>
+    </linearGradient>
+    <linearGradient id="sponge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6C99A"/>
+      <stop offset="1" stop-color="#E0A86C"/>
+    </linearGradient>
+    <linearGradient id="plate2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E8E8EA"/>
+      <stop offset="1" stop-color="#C9C9CD"/>
+    </linearGradient>
+  </defs>
+  <!-- 阴影 -->
+  <ellipse cx="120" cy="208" rx="80" ry="14" fill="rgba(0,0,0,0.18)"/>
+  <!-- 盘子 -->
+  <ellipse cx="120" cy="198" rx="82" ry="18" fill="url(#plate2)" stroke="#B5B5BA" stroke-width="2"/>
+  <!-- 底层蛋糕胚 -->
+  <path d="M64 150 L176 150 L176 188 Q176 196 120 196 Q64 196 64 188 Z" fill="url(#sponge)" stroke="#CF955A" stroke-width="2"/>
+  <ellipse cx="120" cy="150" rx="56" ry="14" fill="#F6C99A" stroke="#CF955A" stroke-width="2"/>
+  <!-- 中层奶油 -->
+  <path d="M70 120 Q120 110 170 120 L170 152 Q120 162 70 152 Z" fill="url(#cream)" stroke="#F0CBA8" stroke-width="1.5"/>
+  <!-- 奶油波浪边 -->
+  <path d="M70 150 q12 10 22 0 q12 10 22 0 q12 10 22 0 q12 10 22 0" fill="none" stroke="#FCE3CE" stroke-width="4" stroke-linecap="round"/>
+  <!-- 顶层 -->
+  <ellipse cx="120" cy="120" rx="50" ry="13" fill="#FFF6EF" stroke="#F0CBA8" stroke-width="1.5"/>
+  <!-- 草莓 -->
+  <path d="M120 78 Q108 88 112 104 Q116 116 120 118 Q124 116 128 104 Q132 88 120 78 Z" fill="#E0252B"/>
+  <path d="M120 76 l-8 -8 m8 8 l8 -8 m-8 8 l0 -10" stroke="#3FA34D" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="115" cy="96" r="1.6" fill="#FFD2D2"/>
+  <circle cx="124" cy="100" r="1.6" fill="#FFD2D2"/>
+  <circle cx="119" cy="108" r="1.6" fill="#FFD2D2"/>
+  <!-- 蜡烛点缀 -->
+  <rect x="92" y="100" width="5" height="22" rx="2" fill="#C00000"/>
+  <path d="M94.5 92 Q90 98 94.5 100 Q99 98 94.5 92 Z" fill="#FF9840"/>
+</svg>

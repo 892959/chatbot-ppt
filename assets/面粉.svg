@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="sack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0E4C7"/>
+      <stop offset="1" stop-color="#D8C49A"/>
+    </linearGradient>
+  </defs>
+  <!-- 阴影 -->
+  <ellipse cx="120" cy="210" rx="70" ry="12" fill="rgba(0,0,0,0.18)"/>
+  <!-- 袋身 -->
+  <path d="M62 80 Q60 70 72 64 L168 64 Q180 70 178 80 L188 196 Q190 208 176 208 L64 208 Q50 208 52 196 Z" fill="url(#sack)" stroke="#B89B66" stroke-width="3"/>
+  <!-- 袋口褶皱 -->
+  <path d="M72 64 Q90 48 120 52 Q150 48 168 64 Q150 60 120 62 Q90 60 72 64 Z" fill="#E3D2A8" stroke="#B89B66" stroke-width="2"/>
+  <path d="M96 56 L100 64 M120 53 L120 62 M144 56 L140 64" stroke="#B89B66" stroke-width="2" fill="none"/>
+  <!-- 标签 -->
+  <rect x="84" y="108" width="72" height="62" rx="6" fill="#FFFFFF" stroke="#C00000" stroke-width="3"/>
+  <text x="120" y="150" font-family="Microsoft YaHei,sans-serif" font-size="30" font-weight="bold" fill="#C00000" text-anchor="middle">面粉</text>
+  <!-- 飘起的面粉点 -->
+  <circle cx="70" cy="92" r="3" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="176" cy="100" r="2.5" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="60" cy="120" r="2" fill="#FFFFFF" opacity="0.6"/>
+</svg>
