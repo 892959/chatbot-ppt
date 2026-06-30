@@ -140,7 +140,7 @@ body {
 .agenda-item:hover { border-left-color: var(--bg-accent); background: rgba(192,0,0,.02); }
 .agenda-number { font-size: clamp(2rem,4.5vw,3.4rem); font-weight:700; color: var(--bg-accent); line-height:.9; }
 .agenda-text .t { font-size: var(--h3-size); font-weight:bold; color: var(--text-primary); }
-.agenda-text .d { font-size: var(--small-size); color: var(--text-secondary); margin-top:.3rem; }
+.agenda-text .d { font-size: var(--body-size); color: var(--text-secondary); margin-top:.3rem; }
 
 /* ===== 数据卡片 ===== */
 .metric-row { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(.8rem,2vw,1.8rem); margin: var(--content-gap) 0; }
@@ -190,6 +190,9 @@ body {
 .metaphor-imgs figcaption { margin-top:.5rem; font-size:var(--small-size); color:rgba(255,255,255,.85); white-space:nowrap; }
 .metaphor-imgs .m-arrow { color:var(--chart-9); font-size:clamp(1.2rem,2.5vw,1.8rem); font-weight:bold; }
 .metaphor-imgs .m-or { color:rgba(255,255,255,.55); font-size:var(--small-size); }
+.metaphor-imgs .price { display:inline-block; margin-bottom:.4rem; font-weight:bold; font-family:"Microsoft YaHei",sans-serif; font-size:clamp(.9rem,1.8vw,1.3rem); padding:.1rem .6rem; border-radius:999px; line-height:1.4; }
+.metaphor-imgs .price.cheap { color:rgba(255,255,255,.8); background:rgba(255,255,255,.12); }
+.metaphor-imgs .price.pricey { color:#fff; background:var(--chart-8); box-shadow:0 2px 10px rgba(255,118,0,.5); }
 
 /* ===== 要点列表 ===== */
 .bullet-list { list-style:none; display:flex; flex-direction:column; gap: clamp(.6rem,1.4vh,1.1rem); margin-top: var(--element-gap); }
@@ -217,6 +220,13 @@ body {
 .embed-vis { display:flex; gap: clamp(.5rem,1.2vw,1rem); flex-wrap:wrap; justify-content:center; margin: var(--element-gap) 0;}
 .word-chip { background:#fff; border:1px solid rgba(192,0,0,.2); border-radius:8px; padding:.4rem .8rem; font-size: var(--small-size); }
 .word-chip .vec { display:block; font-family: monospace; color: var(--bg-accent); font-size:.85em; margin-top:.2rem;}
+/* embedding 地位/性别表 */
+.embed-table { border-collapse:collapse; width:100%; max-width:420px; margin:0 auto; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,.06); }
+.embed-table th, .embed-table td { padding:clamp(.4rem,1.2vh,.8rem) clamp(.5rem,1.5vw,1rem); text-align:center; font-size:var(--body-size); border:1px solid #EEE; }
+.embed-table thead th { background:var(--bg-dark); color:#fff; font-weight:bold; }
+.embed-table tbody td:first-child { text-align:left; font-weight:bold; color:var(--text-primary); white-space:nowrap; }
+.embed-table tbody td { color:var(--bg-accent); font-weight:bold; }
+.embed-table tr.hl td { background:rgba(192,0,0,.06); }
 
 /* ===== 时间轴/托管阶段 ===== */
 .stage-flow { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(.8rem,2vw,1.6rem); margin-top: var(--content-gap); position:relative;}
@@ -269,7 +279,7 @@ body {
         <div class="accent-bar reveal" style="background:#fff;"></div>
         <div class="meta reveal">
             <span>邱梓涛</span>
-            <span>精灵运营部月度分享</span>
+            <span>精灵运营部</span>
             <span>2026.07</span>
         </div>
     </div>
@@ -292,17 +302,7 @@ body {
     <div class="page-num">01 / 16</div>
 </section>
 
-<!-- 3. 开场钩子 -->
-<section class="slide quote-slide">
-    <div class="slide-content">
-        <div class="quote-mark reveal">"</div>
-        <div class="big-quote reveal">一个玩家进线，背后是一条<span class="em">环环相扣</span>的 AI 流水线。<br>而 chatbot，是直接面向客服的<span class="em">最后一环</span>。</div>
-        <div class="quote-src reveal">— 它能不能用、好不好用，决定了前面所有环节的价值能否兑现</div>
-    </div>
-    <div class="page-num">02 / 16</div>
-</section>
-
-<!-- 4. chatbot 是什么（界面） -->
+<!-- 3. chatbot 是什么（界面） -->
 <section class="slide gradient-bg">
     <span class="corner-mark">01 · 项目背景</span>
     <div class="slide-content">
@@ -317,7 +317,7 @@ body {
                     <li><span class="ic">4</span><div><b>0428 正式上线</b><span class="sub">覆盖 ma75（光遇）+ xyq（梦幻西游）等业务线</span></div></li>
                 </ul>
             </div>
-            <div class="reveal">
+            <div class="reveal" style="position:relative;left:-1.5rem;">
                 <div style="background:#fff;border-radius:14px;padding:clamp(.6rem,1.4vw,1rem);box-shadow:0 6px 26px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.05);margin-bottom:var(--element-gap);">
                     <div style="font-size:var(--small-size);color:var(--bg-accent);font-weight:bold;margin-bottom:.4rem;">🤖 AI 推荐回复</div>
                     <div style="font-size:var(--small-size);line-height:1.45;color:var(--text-primary);background:rgba(192,0,0,.03);border-radius:8px;padding:.5rem .7rem;">"理解大佬的心情，可以多留意后续活动哦~"</div>
@@ -334,10 +334,10 @@ body {
             </div>
         </div>
     </div>
-    <div class="page-num">03 / 16</div>
+    <div class="page-num">02 / 16</div>
 </section>
 
-<!-- 5. 项目背景：全链路 -->
+<!-- 4. 项目背景：全链路 -->
 <section class="slide gradient-bg grid-bg">
     <span class="corner-mark">01 · 项目背景</span>
     <div class="slide-content">
@@ -357,6 +357,16 @@ body {
             <li><span class="ic">★</span><div><b>chatbot 的输入：</b><span class="sub">① AX 工具执行结果（主） ② 玩家与客服上下文 ③ 玩家当前发言　→　输出：一句可直接用的推荐话术</span></div></li>
         </ul>
     </div>
+    <div class="page-num">03 / 16</div>
+</section>
+
+<!-- 5. 开场钩子 -->
+<section class="slide quote-slide">
+    <div class="slide-content">
+        <div class="quote-mark reveal">"</div>
+        <div class="big-quote reveal">一个玩家进线，背后是一条<span class="em">环环相扣</span>的 AI 流水线。<br>而 chatbot，是直接面向客服的<span class="em">最后一环</span>。</div>
+        <div class="quote-src reveal">— 它能不能用、好不好用，决定了前面所有环节的价值能否兑现</div>
+    </div>
     <div class="page-num">04 / 16</div>
 </section>
 
@@ -367,12 +377,12 @@ body {
         <div class="section-title reveal">上线成果速览<span class="en">Key metrics since 0428</span></div>
         <div class="accent-bar reveal"></div>
         <div class="metric-row">
-            <div class="metric-card c-blue reveal"><div class="num">3.80%</div><div class="lbl">辅助占比<br><span class="muted" style="font-size:.85em">理论上限 36.7%，约 9 倍空间</span></div></div>
-            <div class="metric-card c-orange reveal"><div class="num">66.61%</div><div class="lbl">话术推荐率<br><span class="muted" style="font-size:.85em">有多少消息生成了推荐</span></div></div>
-            <div class="metric-card c-red reveal"><div class="num">55.10%</div><div class="lbl">推荐可用率<br><span class="muted" style="font-size:.85em">推荐话术中可用的比例</span></div></div>
+            <div class="metric-card c-orange reveal"><div class="num">68.01%</div><div class="lbl">话术生成率<br><span class="muted" style="font-size:.85em">有多少消息生成了推荐</span></div></div>
+            <div class="metric-card c-red reveal"><div class="num">55.10%</div><div class="lbl">话术可用率<br><span class="muted" style="font-size:.85em">推荐话术中可用的比例</span></div></div>
+            <div class="metric-card c-blue reveal"><div class="num">6.30%</div><div class="lbl">话术采纳率<br><span class="muted" style="font-size:.85em">理论上限 36.7%，仍有数倍空间</span></div></div>
         </div>
         <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:.5rem;">
-            从 5/8 的 <b class="highlight">2.03%</b> 到 5/27 的 <b class="highlight">4.88%</b>，闲聊能力、提示词优化每一次迭代都带来肉眼可见的跃升 —— 但距离天花板，我们才走了不到 <b class="highlight">1/9</b>。
+            从 4/28 的 <b class="highlight">2.80%</b> 到 6/28 的 <b class="highlight">6.30%</b>，闲聊能力、提示词优化每一次迭代都带来肉眼可见的跃升 —— 但距离天花板，我们才走了不到 <b class="highlight">1/6</b>。
         </p>
     </div>
     <div class="page-num">05 / 16</div>
@@ -382,20 +392,40 @@ body {
 <section class="slide gradient-bg grid-bg">
     <span class="corner-mark">📖 知识加油站</span>
     <div class="slide-content">
-        <div class="section-title reveal">大模型靠啥理解文字？<span class="en">Word Embedding · 词嵌入</span></div>
+        <div class="section-title reveal">大模型靠啥「读懂」玩家的话？<span class="en">Word Embedding · 词嵌入</span></div>
         <div class="accent-bar reveal"></div>
-        <div class="reveal embed-vis">
-            <div class="word-chip">充值<span class="vec">[0.82, -0.11, …]</span></div>
-            <div class="word-chip">没到账<span class="vec">[0.79, -0.09, …]</span></div>
-            <div class="word-chip">退款<span class="vec">[0.75, 0.20, …]</span></div>
-            <div class="word-chip">封号<span class="vec">[-0.30, 0.66, …]</span></div>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);margin-bottom:var(--element-gap);">
+            chatbot 要先<b>看懂玩家说什么</b>，可机器只认数字。最简单的办法：给每个词打几个"分"。比如用「地位、性别」两个维度来描述：
+        </p>
+        <div class="two-col" style="align-items:center;margin-top:0;">
+            <div class="reveal">
+                <table class="embed-table">
+                    <thead><tr><th></th><th>地位</th><th>性别</th></tr></thead>
+                    <tbody>
+                        <tr><td>👑 国王</td><td>2</td><td>1</td></tr>
+                        <tr class="hl"><td>👸 女王</td><td>2</td><td>2</td></tr>
+                        <tr><td>🧔 男人</td><td>1</td><td>1</td></tr>
+                        <tr><td>👩 女人</td><td>1</td><td>2</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:var(--small-size);color:var(--text-secondary);text-align:center;margin-top:.5rem;">每个词 → 一串数字（坐标）</p>
+            </div>
+            <div class="reveal">
+                <div style="background:#fff;border-radius:14px;padding:clamp(.9rem,2vw,1.4rem);box-shadow:0 6px 26px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.05);">
+                    <div style="font-size:var(--body-size);color:var(--text-primary);line-height:1.9;text-align:center;">
+                        👑国王<b>(2,1)</b> − 🧔男人<b>(1,1)</b> + 👩女人<b>(1,2)</b><br>
+                        <span style="color:var(--bg-accent);font-weight:bold;font-size:1.15em;">= (2,2) = 👸女王！</span>
+                    </div>
+                </div>
+                <p style="font-size:var(--small-size);color:var(--text-secondary);margin-top:.7rem;line-height:1.5;">
+                    机器不是死背字典——「国王之于男人」就像「女王之于女人」，<b>词之间的关系，竟然能用加减算出来</b>。意思越近，坐标越近。
+                </p>
+            </div>
         </div>
-        <ul class="bullet-list reveal">
-            <li><span class="ic">①</span><div><b>文字 → 向量：</b><span class="sub">模型把每个词变成一串数字（向量），意思相近的词，向量也相近 —— "充值"和"没到账"挨得近，"封号"离得远。</span></div></li>
-            <li><span class="ic">②</span><div><b>这就是 VOC 识别的底层：</b><span class="sub">玩家说"我钱扣了东西没给我"，模型靠 embedding 判断它和"充值未到账"是一类 —— 不需要一字一句写死规则。</span></div></li>
-            <li><span class="ic">③</span><div><b>这也是 chatbot 的底层：</b><span class="sub">理解上下文、匹配知识库、生成话术，全靠把语言压进同一个"语义空间"再计算距离。</span></div></li>
+        <ul class="bullet-list reveal" style="margin-top:var(--element-gap)">
+            <li><span class="ic">→</span><div><b>这就是我们项目的地基：</b><span class="sub">真实模型用上千个维度，但原理一样。靠它，"扣了钱没给我""充值没到账"被认成同一个 VOC；chatbot 理解上下文、匹配知识库、生成话术，全是在这个"坐标空间"里算距离。</span></div></li>
         </ul>
-        <p class="reveal" style="font-size:var(--small-size);color:var(--text-secondary);margin-top:.6rem;">💡 一句话：embedding 把「语言」翻译成机器能算的「坐标」。理解了它，就理解了 chatbot 为什么有时聪明、有时犯傻。</p>
+        <p class="reveal" style="font-size:var(--small-size);color:var(--text-secondary);margin-top:.5rem;">💡 一句话：embedding 把「文字」翻译成机器能算的「坐标」—— 这是 VOC 识别和 chatbot 共同的底层。</p>
     </div>
     <div class="page-num">06 / 16</div>
 </section>
@@ -443,17 +473,16 @@ body {
             <div class="slide-tag reveal" style="color:var(--chart-9)">03 · 方法论</div>
             <div class="big-quote reveal">同样一袋面粉，<br>可以做成<span class="em">馒头</span>，也可以做成<span class="em">蛋糕</span>。</div>
             <div class="quote-src reveal" style="line-height:1.7;">
-                原料没变，关键看你怎么塑造、放在什么位置。<br>
-                —— 同样的 AX 工具结果，提示词与方法不同，做出的话术天差地别；<br>
-                —— 同样的客服，不该被钉死在"打字员"，他可以是<b style="color:var(--chart-9)">盯盘的指挥官</b>。
+                原料没变，<b style="color:var(--chart-9)">关键看你怎么塑造、放在什么位置</b>。<br>
+                揉一揉上锅蒸，是馒头；加点心思进烤箱，就是蛋糕。
             </div>
         </div>
         <div class="reveal metaphor-imgs">
-            <figure><img src="assets/面粉.svg" alt="面粉" class="slide-image zoomable"><figcaption>面粉 · 同一原料</figcaption></figure>
+            <figure><span class="price" style="visibility:hidden">$0</span><img src="assets/面粉.svg" alt="面粉" class="slide-image zoomable"><figcaption>面粉 · 同一原料</figcaption></figure>
             <span class="m-arrow">→</span>
-            <figure><img src="assets/馒头.svg" alt="馒头" class="slide-image zoomable"><figcaption>馒头</figcaption></figure>
+            <figure><span class="price cheap">$1</span><img src="assets/馒头.svg" alt="馒头" class="slide-image zoomable"><figcaption>馒头</figcaption></figure>
             <span class="m-or">或</span>
-            <figure><img src="assets/蛋糕.svg" alt="蛋糕" class="slide-image zoomable"><figcaption>蛋糕</figcaption></figure>
+            <figure><span class="price pricey">$100</span><img src="assets/蛋糕.svg" alt="蛋糕" class="slide-image zoomable"><figcaption>蛋糕</figcaption></figure>
         </div>
     </div>
     <div class="page-num">09 / 16</div>
@@ -463,8 +492,12 @@ body {
 <section class="slide gradient-bg">
     <span class="corner-mark">03 · 方法论</span>
     <div class="slide-content">
-        <div class="section-title reveal">原料相同，成果不同<span class="en">Same flour, different cake</span></div>
+        <div class="section-title reveal">那么，我们的"面粉"是什么？<span class="en">Same flour, different cake</span></div>
         <div class="accent-bar reveal"></div>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);margin-bottom:var(--content-gap);line-height:1.7;">
+            —— 同样的 AX 工具结果，提示词与方法不同，做出的话术<b class="highlight">天差地别</b>；<br>
+            —— 同样的客服，不该被钉死在"打字员"，他可以是<b class="highlight">盯盘的指挥官</b>。
+        </p>
         <div class="two-col">
             <div class="reveal" style="background:#fff;border-radius:12px;padding:clamp(1rem,2vw,1.6rem);box-shadow:0 4px 18px rgba(0,0,0,.06)">
                 <div style="font-weight:bold;color:var(--text-primary);font-size:var(--h3-size);margin-bottom:.6rem;">🌾 同样的"面粉"</div>
