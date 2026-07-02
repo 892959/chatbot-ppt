@@ -30,8 +30,8 @@
     --h2-size: clamp(1.3rem, 3.6vw, 2.5rem);
     --h3-size: clamp(1rem, 2.4vw, 1.6rem);
     --subtitle-size: clamp(0.9rem, 2vw, 1.25rem);
-    --body-size: clamp(0.78rem, 1.3vw, 1.05rem);
-    --small-size: clamp(0.68rem, 1vw, 0.85rem);
+    --body-size: clamp(0.85rem, 1.4vw, 1.12rem);
+    --small-size: clamp(0.78rem, 1.15vw, 0.96rem);
 
     --slide-padding: clamp(1.5rem, 4vw, 4.5rem);
     --content-gap: clamp(1rem, 2vw, 2rem);
@@ -176,6 +176,9 @@ body {
 .shot-cap { font-size:var(--small-size); color:var(--text-secondary); text-align:center; margin-top:.5rem; }
 .shot-cap b { color:var(--bg-accent); }
 .zoom-hint { position:absolute; top:.5rem; right:.5rem; background:rgba(0,0,0,.55); color:#fff; font-size:var(--small-size); padding:.15rem .5rem; border-radius:6px; pointer-events:none; }
+.watch-video { display:inline-block; margin-top:.7rem; cursor:pointer; font-size:var(--small-size); font-weight:bold; color:#fff; background:var(--chart-8); padding:.3rem .8rem; border-radius:999px; box-shadow:0 2px 10px rgba(255,118,0,.5); transition:transform .2s,box-shadow .2s; }
+.watch-video:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(255,118,0,.7); }
+.lightbox video { max-width:96vw; max-height:92vh; border-radius:8px; box-shadow:0 12px 60px rgba(0,0,0,.6); background:#000; }
 
 /* ===== 灯箱 ===== */
 .lightbox { position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; z-index:200; cursor:zoom-out; padding:3vh 3vw; }
@@ -327,10 +330,12 @@ body {
                     </div>
                 </div>
                 <div class="shot-wrap">
-                    <img src="assets/聚星工作台chatbot.png" alt="聚星工作台中 chatbot 推荐话术的位置" class="slide-image screenshot zoomable" style="width:100%;">
-                    <span class="zoom-hint">🔍 点击放大</span>
+                    <video class="slide-image screenshot" style="width:100%;display:block;" controls preload="none" playsinline poster="assets/聚星工作台chatbot.png">
+                        <source src="assets/客服辅助视频v2.mp4" type="video/mp4">
+                    </video>
+                    <span class="zoom-hint">▶ 点击播放</span>
                 </div>
-                <div class="shot-cap">聚星工作台真实界面 —— <b>红框处即 chatbot 推荐话术</b></div>
+                <div class="shot-cap">聚星工作台真实界面 —— <b>点击播放，看 chatbot 实际怎么用</b></div>
             </div>
         </div>
     </div>
@@ -433,57 +438,97 @@ body {
 <section class="slide gradient-bg">
     <span class="corner-mark">01 · 项目背景</span>
     <div class="slide-content">
-        <div class="section-title reveal">上线成果速览<span class="en">Key metrics since 0428</span></div>
+        <div class="section-title reveal">上线初期效果<span class="en">Early metrics after launch · Apr</span></div>
         <div class="accent-bar reveal"></div>
         <div class="metric-row">
-            <div class="metric-card c-orange reveal"><div class="num">68.01%</div><div class="lbl">话术生成率<br><span class="muted" style="font-size:.85em">有多少消息生成了推荐</span></div></div>
-            <div class="metric-card c-red reveal"><div class="num">55.10%</div><div class="lbl">话术可用率<br><span class="muted" style="font-size:.85em">推荐话术中可用的比例</span></div></div>
-            <div class="metric-card c-blue reveal"><div class="num">6.30%</div><div class="lbl">话术采纳率<br><span class="muted" style="font-size:.85em">理论上限 36.7%，仍有数倍空间</span></div></div>
+            <div class="metric-card c-orange reveal"><div class="num">50.8%</div><div class="lbl">话术生成率<br><span class="muted" style="font-size:.85em">后验证拦截刚上线</span></div></div>
+            <div class="metric-card c-red reveal"><div class="num">46.0%</div><div class="lbl">话术可用率<br><span class="muted" style="font-size:.85em">首次人工标注原始可用率</span></div></div>
+            <div class="metric-card c-blue reveal"><div class="num">2.80%</div><div class="lbl">话术采纳率<br><span class="muted" style="font-size:.85em">4/28 上线首周</span></div></div>
         </div>
         <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:.5rem;">
-            从 4/28 的 <b class="highlight">2.80%</b> 到 6/28 的 <b class="highlight">6.30%</b>，闲聊能力、提示词优化每一次迭代都带来肉眼可见的跃升 —— 但距离天花板，我们才走了不到 <b class="highlight">1/6</b>。
+            上线初期，推荐能生成，但<b class="highlight">可用率、采纳率都偏低</b> —— 效果远没释放出来。这，就是我们要解决的起点。
         </p>
     </div>
     <div class="page-num">05 / 15</div>
 </section>
 
-<!-- 8. 困难/痛点 -->
-<section class="slide gradient-bg">
+<!-- 8. 困难/痛点 + 数据归因（融合） -->
+<section class="slide gradient-bg grid-bg">
     <span class="corner-mark">02 · 困难与解法</span>
     <div class="slide-content">
-        <div class="section-title reveal">采纳率为什么上不去？<span class="en">Three bottlenecks</span></div>
+        <div class="section-title reveal">采纳率上不去，问题出在哪？<span class="en">Where's the room to grow — data-driven</span></div>
         <div class="accent-bar reveal"></div>
-        <div class="card-grid">
-            <div class="pcard reveal"><div class="h">①&nbsp;客服操作习惯</div><div class="b">习惯自己打字，点选推荐的意愿待提升。工具再好，不用 = 0。</div></div>
-            <div class="pcard reveal"><div class="h">②&nbsp;上游 AX 结果</div><div class="b">进人工只自动调一次工具，VOC 错了/玩家提新问题，结果就不匹配，话术失真。</div></div>
-            <div class="pcard reveal"><div class="h">③&nbsp;话术拦截过严</div><div class="b">后验证为保质量拦掉不少话术，可用推荐量被过滤过多。</div></div>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);margin-bottom:var(--content-gap);line-height:1.6;">
+            不靠拍脑袋 —— 全量拉取 <b class="highlight">12.8 万</b>条会话，再人工抽取每批 <b class="highlight">200</b> 条逐条标注，把每一条话术是否可用都归因到具体环节。
+        </p>
+        <div class="two-col" style="align-items:stretch;gap:clamp(1rem,2.5vw,2rem);">
+            <div class="reveal" style="background:#fff;border-radius:12px;padding:clamp(1rem,2vw,1.5rem);box-shadow:0 4px 18px rgba(0,0,0,.06);">
+                <div style="font-weight:bold;color:var(--text-primary);font-size:var(--h3-size);margin-bottom:.9rem;">🔬 一层层剥开，可用率其实很高</div>
+                <div style="display:flex;flex-direction:column;gap:.75rem;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--small-size);margin-bottom:.25rem;color:var(--text-primary);"><span>原始可用率</span><b>46.0%</b></div>
+                        <div style="background:#EEE;border-radius:6px;height:15px;"><div style="width:46%;height:100%;background:var(--chart-9);border-radius:6px;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--small-size);margin-bottom:.25rem;color:var(--text-primary);"><span>剔除"暂无推荐"（前端本就不展示）</span><b>66.7%</b></div>
+                        <div style="background:#EEE;border-radius:6px;height:15px;"><div style="width:66.7%;height:100%;background:var(--chart-8);border-radius:6px;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--small-size);margin-bottom:.25rem;color:var(--text-primary);"><span>再剔除上游链路待优化项</span><b style="color:var(--bg-accent)">86.8%</b></div>
+                        <div style="background:#EEE;border-radius:6px;height:15px;"><div style="width:86.8%;height:100%;background:var(--bg-accent);border-radius:6px;"></div></div>
+                    </div>
+                </div>
+                <div style="font-size:var(--small-size);color:var(--text-secondary);margin-top:.7rem;">同口径 xyq：23% → 37% → <b>79%</b>　·　底座能力已成立</div>
+            </div>
+            <div class="reveal" style="background:rgba(192,0,0,.04);border-radius:12px;padding:clamp(1rem,2vw,1.5rem);border:1px solid rgba(192,0,0,.12);">
+                <div style="font-weight:bold;color:var(--bg-accent);font-size:var(--h3-size);margin-bottom:.5rem;">📌 提升空间主要在上游链路</div>
+                <div style="font-size:var(--small-size);color:var(--text-secondary);margin-bottom:.7rem;">剔除"暂无推荐"后，剩余待优化项主要来自：</div>
+                <div style="display:flex;flex-direction:column;gap:.7rem;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--small-size);margin-bottom:.25rem;color:var(--text-primary);"><span>上游链路（AX / 知识查询）</span><b style="color:var(--bg-accent)">约 77%</b></div>
+                        <div style="background:#EEE;border-radius:6px;height:15px;"><div style="width:77%;height:100%;background:var(--bg-accent);border-radius:6px;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--small-size);margin-bottom:.25rem;color:var(--text-primary);"><span>Chatbot 自身能力</span><b>约 23%</b></div>
+                        <div style="background:#EEE;border-radius:6px;height:15px;"><div style="width:23%;height:100%;background:var(--chart-9);border-radius:6px;"></div></div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:.6rem;margin-top:.9rem;">
+                    <div style="flex:1;text-align:center;background:#fff;border-radius:8px;padding:.45rem;"><div style="font-size:var(--h3-size);font-weight:bold;color:var(--text-primary);">98%</div><div style="font-size:var(--small-size);color:var(--text-secondary);">低风险</div></div>
+                    <div style="flex:1;text-align:center;background:#fff;border-radius:8px;padding:.45rem;"><div style="font-size:var(--h3-size);font-weight:bold;color:var(--bg-accent);">0</div><div style="font-size:var(--small-size);color:var(--text-secondary);">高风险</div></div>
+                    <div style="flex:1.6;text-align:center;background:#fff;border-radius:8px;padding:.45rem;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:var(--small-size);color:var(--text-secondary);line-height:1.35;">另有<b style="color:var(--text-primary)">使用侧</b><br>客服习惯 · 拦截策略</div></div>
+                </div>
+            </div>
         </div>
-        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:var(--content-gap);">
-            一个产品问题，<b class="highlight">一半在技术，一半在人</b>。
+        <p class="reveal" style="text-align:center;font-size:var(--body-size);color:var(--text-secondary);margin-top:var(--content-gap);">
+            结论：<b class="highlight">chatbot 底座已成立，再上一层靠全链路协同</b> —— 上游数据与工具的稳定性是重点，客服使用习惯同步养成。
         </p>
     </div>
     <div class="page-num">06 / 15</div>
 </section>
 
-<!-- 9. 解决方案 -->
 <section class="slide gradient-bg">
     <span class="corner-mark">02 · 困难与解法</span>
     <div class="slide-content">
-        <div class="section-title reveal">我们做了什么<span class="en">What we did & what's next</span></div>
+        <div class="section-title reveal">我们做了什么，效果立竿见影！<span class="en">What we did & the results</span></div>
         <div class="accent-bar reveal"></div>
+        <div class="metric-row" style="margin:var(--content-gap) 0 var(--element-gap);">
+            <div class="metric-card c-orange reveal"><div class="num" style="position:relative;">68.01%<span style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-size:.34em;color:#0a8f3c;font-weight:bold;background:rgba(10,143,60,.12);padding:.12em .45em;border-radius:6px;white-space:nowrap;">↑ 17.2pp</span></div><div class="lbl">话术生成率<br><span class="muted">有多少消息生成了推荐</span></div></div>
+            <div class="metric-card c-red reveal"><div class="num" style="position:relative;">55.10%<span style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-size:.34em;color:#0a8f3c;font-weight:bold;background:rgba(10,143,60,.12);padding:.12em .45em;border-radius:6px;white-space:nowrap;">↑ 9.1pp</span></div><div class="lbl">话术可用率<br><span class="muted">推荐话术中可用的比例</span></div></div>
+            <div class="metric-card c-blue reveal"><div class="num" style="position:relative;">6.30%<span style="position:absolute;right:8%;top:50%;transform:translateY(-50%);font-size:.34em;color:#0a8f3c;font-weight:bold;background:rgba(10,143,60,.12);padding:.12em .45em;border-radius:6px;white-space:nowrap;">↑ 3.5pp</span></div><div class="lbl">话术采纳率<br><span class="muted">较上线初期翻倍以上</span></div></div>
+        </div>
         <div class="card-grid">
-            <div class="pcard sol reveal"><div class="h">A&nbsp;优化工作流</div><div class="b">补充闲聊/安抚类话术覆盖；禁止"收到""稍等"类废话。<br><span class="highlight">闲聊能力上线后曲线明显抬升</span></div></div>
+            <div class="pcard sol reveal"><div class="h">A&nbsp;优化工作流</div><div class="b">补充闲聊/安抚类话术覆盖；禁止"收到""稍等"类废话。</div></div>
             <div class="pcard sol reveal"><div class="h">B&nbsp;补高频知识库</div><div class="b">针对高频场景补充识别与话术，提高推荐命中率。</div></div>
             <div class="pcard sol reveal"><div class="h">C&nbsp;调拦截策略</div><div class="b">在保证质量前提下释放推荐量，平衡"可用率"与"覆盖率"。</div></div>
         </div>
-        <ul class="bullet-list reveal" style="margin-top:var(--content-gap)">
-            <li><span class="ic">→</span><div><b>规划中：二次动态 VOC 总结调用 skill</b><span class="sub">不再只调一次工具 —— 玩家意图变了，系统按「信息量」动态再识别一次、再调一次，自动纠偏。</span></div></li>
-        </ul>
+        <p class="reveal" style="font-size:var(--body-size);color:var(--text-secondary);text-align:center;margin-top:var(--content-gap);">
+            三项指标全面抬升 —— 我们做的事，实打实有效。下一步规划<b class="highlight">二次动态 VOC 调用</b>，让上游按「信息量」自动再识别、再调用，进一步纠偏。
+        </p>
     </div>
     <div class="page-num">07 / 15</div>
 </section>
 
-<!-- 10. 方法论总结（前移） -->
 <section class="slide gradient-bg">
     <span class="corner-mark">03 · 方法论</span>
     <div class="slide-content">
@@ -563,7 +608,7 @@ body {
         <div class="stage-flow">
             <div class="stage s1 reveal"><div class="badge">现在</div><div class="st">手动辅助</div><div class="sd">客服逐条点击「一键发送/复制」使用推荐</div></div>
             <div class="stage s2 reveal"><div class="badge">下一步</div><div class="st">半托管</div><div class="sd">高置信话术自动发；低置信/有风险才提醒客服介入</div></div>
-            <div class="stage s3 reveal"><div class="badge" style="background:var(--chart-8)">愿景</div><div class="st">全托管 · 智能盯盘</div><div class="sd">机器人自动在发，没"堵车"不打扰；一个客服盯更多会话</div></div>
+            <div class="stage s3 reveal"><div class="badge" style="background:var(--chart-8)">愿景</div><div class="st">全托管 · 智能盯盘</div><div class="sd">机器人自动在发，没"堵车"不打扰；一个客服盯更多会话</div><span class="watch-video" data-video="assets/chatbot智能盯盘.mp4">▶ 观看盯盘演示</span></div>
         </div>
         <p class="reveal" style="text-align:center;font-size:var(--body-size);color:var(--text-secondary);margin-top:var(--content-gap);">
             核心理念：<b class="highlight">没有卡点就自动流转，有"堵车"（准确率低/有风险/需抉择）才提醒人介入。</b>
@@ -629,6 +674,7 @@ body {
 </section>
 
 <div class="lightbox" id="lightbox"><span class="close-x">&times;</span><img src="" alt="放大查看"></div>
+<div class="lightbox" id="videoLightbox"><span class="close-x">&times;</span><video controls playsinline src=""></video></div>
 
 <script>
 class SlidePresentation {
@@ -688,6 +734,19 @@ new SlidePresentation();
     });
     box.addEventListener('click',()=>box.classList.remove('open'));
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') box.classList.remove('open'); });
+    document.querySelectorAll('.shot-wrap video').forEach(v=>{
+        const hint=v.parentElement.querySelector('.zoom-hint');
+        v.addEventListener('play',()=>{ if(hint) hint.style.display='none'; });
+        v.addEventListener('pause',()=>{ if(hint) hint.style.display=''; });
+    });
+    const vbox=document.getElementById('videoLightbox');
+    const vbxVid=vbox.querySelector('video');
+    const closeVbox=()=>{ vbox.classList.remove('open'); vbxVid.pause(); };
+    document.querySelectorAll('.watch-video').forEach(btn=>{
+        btn.addEventListener('click',e=>{ e.stopPropagation(); vbxVid.src=btn.dataset.video; vbox.classList.add('open'); vbxVid.play(); });
+    });
+    vbox.addEventListener('click',e=>{ if(e.target!==vbxVid) closeVbox(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeVbox(); });
 })();
 </script>
 </body>
